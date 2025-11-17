@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HarvestLink 🌾 | From Farm to Market, Fairly.</title>
+  <meta name="description" content="HarvestLink is a modern farmer-focused SaaS marketplace connecting farmers, buyers, cooperatives, logistics, storage and financial partners across Kenya." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">🌾 HarvestLink</div>
+      <nav>
+        <div class="nav-group">
+          <p class="nav-heading">ANALYTICS</p>
+          <button class="nav-link active" data-target="dashboard">🏠 Dashboard</button>
+          <button class="nav-link" data-target="market">📈 Market Prices</button>
+          <button class="nav-link" data-target="alerts">🔔 Alerts & Insights</button>
+        </div>
+        <div class="nav-group">
+          <p class="nav-heading">OPERATIONS</p>
+          <button class="nav-link" data-target="produce">📦 My Produce</button>
+          <button class="nav-link" data-target="wallet">💵 Wallet & Payments</button>
+          <button class="nav-link" data-target="buyers">🛒 Buyers Marketplace</button>
+          <button class="nav-link" data-target="messages">💬 Messages</button>
+        </div>
+        <div class="nav-group">
+          <p class="nav-heading">COLLAB</p>
+          <button class="nav-link" data-target="coop">🤝 Cooperative Tools</button>
+        </div>
+        <div class="nav-group">
+          <p class="nav-heading">SYSTEM</p>
+          <button class="nav-link" data-target="settings">⚙️ Settings</button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="footer-widget">
+          <p class="label">Active Listings</p>
+          <p class="value" id="footer-listings">18</p>
+        </div>
+        <div class="footer-widget">
+          <p class="label">Monthly Revenue (KSh)</p>
+          <p class="value" id="footer-revenue">1.8M</p>
+        </div>
+      </div>
+    </aside>
+    <main class="main" tabindex="-1">
+      <header class="hero" id="landing">
+        <div>
+          <p class="tag">Digital marketplace & farm OS</p>
+          <h1>🌾 From Farm to Market, Fairly.</h1>
+          <p class="lead">HarvestLink connects farmers, buyers, cooperatives, transporters, storage providers, and financial partners on a single glassmorphic dashboard inspired by modern fintech.</p>
+          <div class="cta-group">
+            <button class="cta" aria-label="Sign up as Farmer">Sign Up (Farmer 👨‍🌾)</button>
+            <button class="cta ghost" aria-label="Sign up as Buyer">Sign Up (Buyer 🛒)</button>
+          </div>
+        </div>
+        <div class="hero-card glass">
+          <p>Live Crop Index</p>
+          <div class="hero-metrics" id="heroMetrics"></div>
+          <p class="tiny">Realtime feed synced with Supabase Realtime + market sensors.</p>
+        </div>
+      </header>
+
+      <section class="how" aria-labelledby="how-title">
+        <h2 id="how-title">How it Works</h2>
+        <div class="grid four" id="howSteps"></div>
+      </section>
+
+      <section class="dashboard" id="dashboard" aria-labelledby="dashboard-title">
+        <div class="section-heading">
+          <h2 id="dashboard-title">Farmer Command Center</h2>
+          <p>Real-time KPIs, market intelligence, logistics bids, cooperative workflows, and M-Pesa synced finances.</p>
+        </div>
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <div class="insight-grid">
+          <article class="insight-card glass">
+            <div class="insight-header">
+              <h3>🤖 AI Market Insight</h3>
+              <span class="badge live">Live</span>
+            </div>
+            <p class="insight-body" id="aiInsight">Tomato prices expected ↑15% next week in Nairobi. Confidence: 87% | Horizon: 7–10 days | Recommendation: Hold stock.</p>
+            <div class="button-row">
+              <button class="pill">Set Alert</button>
+              <button class="pill">Simulate</button>
+              <button class="pill">Open Market</button>
+            </div>
+          </article>
+          <article class="chart-card glass" aria-labelledby="prices-title">
+            <div class="chart-heading">
+              <div>
+                <h3 id="prices-title">📊 Market Prices</h3>
+                <p>Real-time crop prices across Nairobi, Mombasa, Kisumu, Nakuru</p>
+              </div>
+              <div class="toggle" role="group" aria-label="Select time range">
+                <button class="toggle-btn active" data-range="7">7-day</button>
+                <button class="toggle-btn" data-range="30">30-day</button>
+              </div>
+            </div>
+            <canvas id="priceChart" height="200" aria-label="Line chart of crop prices" role="img"></canvas>
+            <div class="legend" id="chartLegend"></div>
+          </article>
+          <article class="chart-card glass" aria-labelledby="inventory-title">
+            <div class="chart-heading">
+              <div>
+                <h3 id="inventory-title">🥬 Inventory Status</h3>
+                <p>Available / Committed / Stored with tooltips</p>
+              </div>
+            </div>
+            <div class="inventory" id="inventoryBars"></div>
+          </article>
+        </div>
+
+        <div class="grid two">
+          <section class="kanban glass" aria-labelledby="kanban-title">
+            <h3 id="kanban-title">Deal Pipeline</h3>
+            <div class="kanban-board" id="kanbanBoard"></div>
+          </section>
+          <section class="logistics glass" aria-labelledby="logistics-title">
+            <h3 id="logistics-title">Logistics Bids</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Route</th>
+                  <th>Bid (KSh)</th>
+                  <th>ETA</th>
+                  <th>Rating</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="logisticsTable"></tbody>
+            </table>
+          </section>
+        </div>
+      </section>
+
+      <section id="market" class="market glass" aria-labelledby="market-title">
+        <div class="section-heading">
+          <h2 id="market-title">Live Market Board</h2>
+          <p>Compare crops by county, filter by grade, subscribe to watchlists.</p>
+        </div>
+        <div class="filters">
+          <label>Crop <select id="cropFilter"></select></label>
+          <label>County <select id="countyFilter"></select></label>
+          <label>Grade <select id="gradeFilter"></select></label>
+          <button class="pill" id="resetFilters">Reset</button>
+        </div>
+        <div class="market-table" id="marketTable"></div>
+      </section>
+
+      <section id="produce" class="produce" aria-labelledby="produce-title">
+        <div class="section-heading">
+          <h2 id="produce-title">📦 My Produce</h2>
+          <p>Attach listings to verified warehouses or co-ops. Offline drafts sync automatically.</p>
+        </div>
+        <form class="glass" id="produceForm" aria-label="Create produce listing">
+          <div class="form-grid">
+            <label>Crop <input name="crop" required placeholder="Tomatoes" /></label>
+            <label>Grade <input name="grade" required placeholder="AA" /></label>
+            <label>Quantity (kg) <input type="number" name="qty" required min="1" /></label>
+            <label>Price per kg (KSh) <input type="number" name="price" required min="1" /></label>
+            <label>Warehouse <input name="warehouse" placeholder="Kirinyaga Cold Store" /></label>
+            <label>Status
+              <select name="status">
+                <option>Draft</option>
+                <option selected>Active</option>
+                <option>Sold</option>
+                <option>Expired</option>
+              </select>
+            </label>
+          </div>
+          <label>Notes <textarea name="notes" rows="2" placeholder="Organic certification, photos..." aria-label="Listing notes"></textarea></label>
+          <button class="cta">Add Produce</button>
+        </form>
+        <div id="produceList" class="grid three"></div>
+        <div class="empty-state glass" id="emptyState" hidden>
+          <p>You haven’t listed any onions yet → <button class="pill" id="prefillOnion">Create Listing</button></p>
+        </div>
+      </section>
+
+      <section id="wallet" class="wallet grid two" aria-labelledby="wallet-title">
+        <article class="glass">
+          <h2 id="wallet-title">💰 Wallet & Payments</h2>
+          <p>Phase 1: Platform wallet with Paybill/Till payments. Phase 2: Full M-Pesa sync.</p>
+          <div class="wallet-balances">
+            <div>
+              <p>Platform Wallet</p>
+              <h3 id="walletBalance">KSh 245,800</h3>
+            </div>
+            <div>
+              <p>M-Pesa Balance</p>
+              <h3 id="mpesaBalance">KSh 198,400</h3>
+            </div>
+          </div>
+          <div class="button-row">
+            <button class="pill">Withdraw</button>
+            <button class="pill">Add Funds</button>
+            <button class="pill">Request Loan</button>
+            <button class="pill">Sync M-Pesa</button>
+          </div>
+          <table class="transactions" aria-label="Wallet transactions">
+            <thead>
+              <tr><th>Ref</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+            </thead>
+            <tbody id="transactionTable"></tbody>
+          </table>
+        </article>
+        <article class="glass">
+          <h3>M-Pesa Sandbox & API Keys</h3>
+          <form class="form-grid" id="mpesaForm">
+            <label>Consumer Key <input name="key" required /></label>
+            <label>Consumer Secret <input name="secret" required /></label>
+            <label>Shortcode <input name="shortcode" required /></label>
+            <label>Passkey <input name="passkey" required /></label>
+            <label>Env <select name="env"><option>Sandbox</option><option>Production</option></select></label>
+          </form>
+          <button class="cta" id="simulatePayment">Simulate C2B Payment</button>
+          <div class="timeline" id="mpesaTimeline"></div>
+        </article>
+      </section>
+
+      <section class="accounting glass" aria-labelledby="accounting-title">
+        <h2 id="accounting-title">💼 Accounting & Cashflow</h2>
+        <div class="grid four" id="accountingCards"></div>
+        <div class="insight" id="expenseInsight"></div>
+        <div class="button-row">
+          <button class="pill">Export PDF</button>
+          <button class="pill">Export Excel</button>
+          <button class="pill">Export CSV</button>
+        </div>
+      </section>
+
+      <section id="buyers" class="buyers" aria-labelledby="buyers-title">
+        <div class="section-heading">
+          <h2 id="buyers-title">🛒 Buyers Marketplace</h2>
+          <p>Verified listings with escrow, chat, and group purchase support.</p>
+        </div>
+        <div class="grid four" id="buyerCards"></div>
+      </section>
+
+      <section id="messages" class="messages grid two" aria-labelledby="messages-title">
+        <article class="glass">
+          <h2 id="messages-title">💬 Messages</h2>
+          <div class="threads" id="threadList"></div>
+        </article>
+        <article class="glass chat" aria-live="polite">
+          <div class="chat-header">
+            <h3 id="chatTitle">Select a conversation</h3>
+            <span class="badge">Realtime</span>
+          </div>
+          <div class="chat-window" id="chatWindow"></div>
+          <form id="chatForm" class="chat-input" aria-label="Send message">
+            <input name="message" placeholder="Type message" autocomplete="off" />
+            <button class="cta" aria-label="Send">Send</button>
+          </form>
+        </article>
+      </section>
+
+      <section id="coop" class="coop grid two" aria-labelledby="coop-title">
+        <article class="glass">
+          <h2 id="coop-title">🤝 Cooperative Tools</h2>
+          <div id="coopTargets"></div>
+          <div class="coop-feed" id="coopFeed"></div>
+        </article>
+        <article class="glass">
+          <h3>Digital Warehouse Receipts</h3>
+          <div id="receiptCards"></div>
+        </article>
+      </section>
+
+      <section class="alerts" id="alerts" aria-labelledby="alerts-title">
+        <div class="section-heading">
+          <h2 id="alerts-title">🔔 Alerts & Insights</h2>
+          <p>Price thresholds, rainfall alerts, AI nudges delivered via app, SMS, WhatsApp, and USSD.</p>
+        </div>
+        <div class="grid three" id="alertCards"></div>
+      </section>
+
+      <section class="settings glass" id="settings" aria-labelledby="settings-title">
+        <h2 id="settings-title">⚙️ Settings</h2>
+        <form class="form-grid" id="settingsForm">
+          <label>Name <input name="name" value="Wanjiku Kariuki" /></label>
+          <label>Phone <input name="phone" value="+254712000000" /></label>
+          <label>County <input name="county" value="Kirinyaga" /></label>
+          <label>Language
+            <select name="language">
+              <option>English</option>
+              <option>Kiswahili</option>
+            </select>
+          </label>
+          <label>Dark Mode
+            <select name="theme" id="themeToggle">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+          <label>2FA <input type="checkbox" name="2fa" checked /></label>
+        </form>
+      </section>
+
+      <section class="schema glass" aria-labelledby="schema-title">
+        <h2 id="schema-title">🗄️ Supabase Database Schema</h2>
+        <pre id="schemaBlock"></pre>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">FAQ</h2>
+        <div id="faqList"></div>
+      </section>
+
+      <section class="testimonials" aria-labelledby="testimonials-title">
+        <h2 id="testimonials-title">Farmer Voices</h2>
+        <div class="grid three" id="testimonialGrid"></div>
+      </section>
+
+      <footer class="site-footer" aria-label="Site footer">
+        <div>
+          <p>Contact: +254 700 000 000 · hello@harvestlink.africa</p>
+          <p>© 2025 HarvestLink Ltd · Privacy · Terms</p>
+        </div>
+        <div>
+          <label>Language <select><option>English</option><option>Kiswahili</option></select></label>
+        </div>
+      </footer>
+    </main>
+    <button class="fab" id="fab">+ Add Produce</button>
+  </div>
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

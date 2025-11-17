@@ -1,0 +1,9 @@
+{
+  "name": "HarvestLink",
+  "short_name": "HarvestLink",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#E8FAF2",
+  "theme_color": "#33C27F",
+  "icons": []
+}
